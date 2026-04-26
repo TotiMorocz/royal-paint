@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#06080F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Royal Paint — Ecosistema Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g:#B8962E;--g2:#D4AF50;--gd:rgba(184,150,46,0.1);--gb:rgba(184,150,46,0.22);
+  --ink:#06080F;--ink2:#0B1019;--ink3:#101824;--ink4:#161F2E;--ink5:#1D2A3E;
+  --snow:#EDE8DF;--fog:#8899B0;--mist:#4A5A6E;
+  --jade:#0F6644;--jadel:#18C47A;--jadef:rgba(15,102,68,0.15);
+  --sap:#1A4A8A;--sapl:#4A8AE8;--sapf:rgba(26,74,138,0.15);
+  --fire:#8A2020;--firel:#E84A4A;--firef:rgba(138,32,32,0.12);
+  --sun:#8A5A0A;--sunl:#F0A020;--sunf:rgba(138,90,10,0.12);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--ink);color:var(--snow);overflow-x:hidden;-webkit-tap-highlight-color:transparent;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(6,8,15,0.97);border-bottom:1px solid rgba(184,150,46,0.1);backdrop-filter:blur(20px);}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:30px;height:30px;border:1.5px solid var(--g);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:var(--g);}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--snow);}
+.nav-demo-btn{background:var(--g);color:var(--ink);font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border:none;border-radius:6px;cursor:pointer;white-space:nowrap;}
+
+/* ── DEMO BANNER ── */
+.demo-banner{background:linear-gradient(135deg,#0F3A1A,#1A6B3A);border-bottom:1px solid rgba(24,196,122,0.3);padding:12px 20px;text-align:center;margin-top:56px;}
+.demo-banner-inner{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
+.demo-pulse{width:8px;height:8px;border-radius:50%;background:var(--jadel);animation:pulse 1.5s infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.8);}}
+.demo-text{font-size:13px;font-weight:600;color:var(--jadel);}
+.demo-sub{font-size:12px;color:rgba(24,196,122,0.7);}
+
+/* ── HERO ── */
+.hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px 56px;position:relative;overflow:hidden;}
+.hero-glow{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(184,150,46,0.08) 0%,transparent 65%);pointer-events:none;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(184,150,46,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(184,150,46,0.025) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;}
+.hero-inner{position:relative;z-index:2;width:100%;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--gb);background:var(--gd);color:var(--g2);font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;padding:8px 18px;border-radius:100px;margin-bottom:32px;}
+.hero-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--g);animation:pulse 2s infinite;}
+.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(56px,14vw,110px);font-weight:300;line-height:.9;letter-spacing:-1px;margin-bottom:28px;}
+.hero-h1 strong{font-weight:700;display:block;}
+.hero-h1 em{color:var(--g2);font-style:italic;}
+.hero-sub{font-size:15px;color:var(--fog);line-height:1.85;margin:0 auto 40px;font-weight:300;max-width:340px;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
+.btn-gold{background:linear-gradient(135deg,var(--g),var(--g2));color:var(--ink);font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;border:none;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-block;-webkit-tap-highlight-color:transparent;}
+.btn-ghost{background:transparent;color:var(--snow);font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;border:1px solid rgba(255,255,255,0.15);border-radius:8px;cursor:pointer;text-decoration:none;display:inline-block;}
+.hero-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:420px;margin:0 auto;}
+.hc{background:var(--ink3);border:1px solid rgba(255,255,255,0.05);border-radius:12px;padding:16px 8px;text-align:center;}
+.hc-n{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--g2);line-height:1;display:block;}
+.hc-l{font-size:9px;color:var(--fog);letter-spacing:1.5px;text-transform:uppercase;margin-top:5px;display:block;}
+
+/* ── DIVIDER ── */
+.divider{height:1px;background:linear-gradient(to right,transparent,rgba(184,150,46,0.15),transparent);margin:0;}
+
+/* ── SECTIONS ── */
+.sec{padding:64px 20px;max-width:900px;margin:0 auto;}
+.ey{font-family:'DM Mono',monospace;font-size:10px;color:var(--g);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.ey::before{content:'';width:20px;height:1px;background:var(--g);flex-shrink:0;}
+.sh{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,8vw,60px);font-weight:300;line-height:.95;letter-spacing:-0.5px;margin-bottom:16px;}
+.sh strong{font-weight:700;}
+.sh em{color:var(--g2);font-style:italic;}
+.sd{font-size:15px;color:var(--fog);line-height:1.85;margin-bottom:48px;font-weight:300;}
+
+/* ── REVEAL ── */
+.r{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.r.v{opacity:1;transform:translateY(0);}
+.r2{opacity:0;transform:translateY(24px);transition:opacity .7s .08s ease,transform .7s .08s ease;}
+.r2.v{opacity:1;transform:translateY(0);}
+.r3{opacity:0;transform:translateY(24px);transition:opacity .7s .16s ease,transform .7s .16s ease;}
+.r3.v{opacity:1;transform:translateY(0);}
+
+/* ── PROBLEMA ── */
+.prob-grid{display:flex;flex-direction:column;gap:16px;}
+.prob-card{background:var(--ink3);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px 24px;position:relative;overflow:hidden;}
+.prob-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--firel),transparent);}
+.prob-ico{font-size:28px;margin-bottom:14px;display:block;}
+.prob-t{font-size:17px;font-weight:700;margin-bottom:10px;}
+.prob-d{font-size:13px;color:var(--fog);line-height:1.8;}
+.prob-tag{display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:100px;margin-top:14px;}
+.pt-g{background:var(--jadef);color:var(--jadel);border:1px solid rgba(24,196,122,0.2);}
+.pt-b{background:var(--sapf);color:var(--sapl);border:1px solid rgba(74,138,232,0.2);}
+.pt-v{background:rgba(58,26,122,0.15);color:#9A6AE8;border:1px solid rgba(154,106,232,0.2);}
+
+/* ── APP BLOCKS ── */
+.app-block{display:flex;flex-direction:column;gap:32px;margin-bottom:64px;}
+.app-chip{display:inline-flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:100px;margin-bottom:16px;}
+.ac-j{background:var(--jadef);color:var(--jadel);border:1px solid rgba(24,196,122,0.2);}
+.ac-b{background:var(--sapf);color:var(--sapl);border:1px solid rgba(74,138,232,0.2);}
+.app-num{font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:700;color:rgba(184,150,46,0.05);line-height:1;margin-bottom:-18px;letter-spacing:-2px;}
+.app-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,7vw,44px);font-weight:700;line-height:1.05;margin-bottom:14px;}
+.app-sub{font-size:14px;color:var(--fog);line-height:1.8;margin-bottom:24px;font-weight:300;}
+.feat-list{display:flex;flex-direction:column;gap:16px;margin-bottom:32px;}
+.feat{display:flex;align-items:flex-start;gap:14px;}
+.feat-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:1px;}
+.fi-j{background:var(--jadef);}
+.fi-b{background:var(--sapf);}
+.feat-body strong{font-size:13px;font-weight:600;display:block;margin-bottom:3px;color:var(--snow);}
+.feat-body p{font-size:12px;color:var(--fog);line-height:1.7;}
+.feat-new{display:inline-flex;align-items:center;font-family:'DM Mono',monospace;font-size:8px;color:var(--g);letter-spacing:1px;text-transform:uppercase;background:var(--gd);border:1px solid var(--gb);padding:2px 7px;border-radius:100px;margin-left:6px;vertical-align:middle;}
+
+/* ── DEVICE MOCKUP ── */
+.device{background:var(--ink2);border:1px solid rgba(184,150,46,0.15);border-radius:20px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.6);}
+.device-bar{background:var(--ink3);padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.device-dots{display:flex;gap:5px;}
+.dd{width:10px;height:10px;border-radius:50%;}
+.dd1{background:#FF5F57;}.dd2{background:#FEBC2E;}.dd3{background:#28C840;}
+.device-url{flex:1;background:var(--ink4);border-radius:6px;padding:5px 10px;font-family:'DM Mono',monospace;font-size:10px;color:var(--mist);}
+
+/* VENTAS SCREEN */
+.sv-header{padding:16px 18px 12px;display:flex;align-items:center;justify-content:space-between;}
+.sv-ava{width:34px;height:34px;border-radius:50%;background:var(--jadef);border:1.5px solid var(--jadel);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--jadel);}
+.sv-name{font-size:14px;font-weight:700;}
+.sv-role{font-size:10px;color:var(--fog);}
+.meta-bar{margin:0 16px 12px;background:var(--ink4);border-radius:12px;padding:14px 16px;}
+.meta-top{display:flex;justify-content:space-between;margin-bottom:8px;}
+.meta-lbl{font-size:11px;color:var(--fog);}
+.meta-pct{font-size:13px;font-weight:700;color:var(--jadel);}
+.meta-track{height:6px;background:var(--ink5);border-radius:100px;overflow:hidden;}
+.meta-fill{height:100%;width:73%;background:linear-gradient(90deg,var(--jade),var(--jadel));border-radius:100px;position:relative;}
+.meta-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);animation:shimmer 2s infinite;}
+@keyframes shimmer{0%{transform:translateX(-100%);}100%{transform:translateX(100%);}}
+.meta-nums{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;}
+.alerta-strip{margin:0 16px 12px;background:var(--sunf);border:1px solid rgba(240,160,32,0.2);border-radius:10px;padding:10px 13px;display:flex;align-items:center;gap:10px;}
+.as-ico{font-size:15px;flex-shrink:0;}
+.as-t{font-size:11px;font-weight:600;color:var(--sunl);}
+.as-s{font-size:10px;color:var(--fog);}
+.ocr-btn{margin:0 16px 12px;background:linear-gradient(135deg,#0F6644,#083D28);border:none;border-radius:12px;padding:14px 18px;width:calc(100% - 32px);cursor:pointer;display:flex;align-items:center;gap:12px;}
+.ocr-ico{font-size:24px;}
+.ocr-t strong{font-size:13px;font-weight:700;color:white;display:block;margin-bottom:2px;}
+.ocr-t span{font-size:10px;color:rgba(255,255,255,0.5);}
+.ocr-prev{margin:0 16px 12px;background:var(--ink4);border:1px solid var(--gb);border-radius:12px;padding:13px 15px;}
+.ocr-prev-h{display:flex;align-items:center;gap:7px;margin-bottom:10px;}
+.ocr-dot{width:6px;height:6px;border-radius:50%;background:var(--sunl);animation:pulse 1.5s infinite;}
+.ocr-prev-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--g);letter-spacing:1.5px;text-transform:uppercase;}
+.ocr-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
+.ocr-f{background:var(--ink5);border-radius:8px;padding:8px 10px;}
+.ocr-fl{font-family:'DM Mono',monospace;font-size:8px;color:var(--fog);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+.ocr-fv{font-size:11px;font-weight:600;color:var(--snow);}
+.ocr-fv.ai{color:var(--g2);}
+.ocr-acts{display:flex;gap:7px;}
+.ocr-confirm{flex:1;background:var(--jadel);color:var(--ink);border:none;border-radius:8px;padding:9px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;cursor:pointer;}
+.ocr-fix{flex:1;background:var(--ink5);color:var(--fog);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:9px;font-family:'Outfit',sans-serif;font-size:11px;cursor:pointer;}
+.sv-tabs{display:flex;background:var(--ink4);margin:0 16px 10px;border-radius:9px;padding:3px;}
+.sv-tab{flex:1;padding:7px;border:none;background:none;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;color:var(--fog);border-radius:7px;cursor:pointer;}
+.sv-tab.on{background:var(--ink2);color:var(--snow);}
+.sv-card{margin:0 16px 8px;background:var(--ink4);border:1px solid rgba(255,255,255,0.04);border-radius:11px;padding:12px 14px;}
+.sv-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;}
+.sv-cn{font-size:12px;font-weight:600;}
+.sv-bdg{font-size:9px;padding:3px 9px;border-radius:100px;font-weight:700;}
+.bv{background:var(--firef);color:var(--firel);}
+.bc{background:var(--sunf);color:var(--sunl);}
+.bp{background:var(--jadef);color:var(--jadel);}
+.sv-amt{font-size:14px;font-weight:700;margin-bottom:2px;}
+.sv-sub{font-size:10px;color:var(--fog);}
+.sv-pay{display:inline-flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:9px;color:var(--sapl);background:var(--sapf);padding:2px 8px;border-radius:100px;margin-top:4px;}
+.sv-met{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:0 16px 14px;}
+.sv-m{background:var(--ink4);border-radius:9px;padding:10px 12px;}
+.sv-mn{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--g2);}
+.sv-ml{font-size:9px;color:var(--fog);margin-top:2px;font-family:'DM Mono',monospace;}
+
+/* DESPACHO SCREEN */
+.map-b{height:130px;background:var(--ink3);position:relative;overflow:hidden;}
+.map-road{position:absolute;top:50%;left:0;right:0;height:3px;background:rgba(74,138,232,0.15);transform:translateY(-50%);}
+.map-route{position:absolute;top:50%;left:8%;width:52%;height:3px;background:linear-gradient(90deg,var(--sapl),rgba(74,138,232,0.3));border-radius:2px;transform:translateY(-50%);}
+.map-offline{position:absolute;top:10px;left:10px;background:var(--firef);border:1px solid rgba(232,74,74,0.2);border-radius:6px;padding:4px 9px;display:flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:9px;color:var(--firel);}
+.map-offline::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--firel);animation:pulse 1s infinite;}
+.map-truck{position:absolute;top:34%;left:8%;font-size:20px;}
+.map-pin{position:absolute;top:18%;left:54%;font-size:18px;}
+.map-eta{position:absolute;bottom:8px;left:8px;right:8px;background:rgba(11,16,25,0.9);backdrop-filter:blur(6px);border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,255,255,0.05);}
+.map-eta-dest{font-size:10px;font-weight:600;}
+.map-eta-sub{font-size:9px;color:var(--fog);}
+.map-eta-t{font-size:12px;font-weight:700;color:var(--sapl);}
+.offline-b{margin:8px 14px;background:var(--sunf);border:1px solid rgba(240,160,32,0.2);border-radius:9px;padding:9px 12px;display:flex;align-items:center;gap:9px;}
+.ob-ico{font-size:14px;}
+.ob-t{font-size:11px;font-weight:700;color:var(--sunl);}
+.ob-s{font-size:9px;color:var(--fog);margin-top:1px;}
+.batt-b{margin:0 14px 8px;background:var(--firef);border:1px solid rgba(232,74,74,0.2);border-radius:9px;padding:8px 12px;display:flex;align-items:center;gap:9px;}
+.bb-t{font-size:11px;color:var(--firel);font-weight:600;}
+.bb-s{font-size:9px;color:var(--fog);}
+.ruta-h{padding:8px 16px 5px;display:flex;justify-content:space-between;}
+.rh-l{font-family:'DM Mono',monospace;font-size:9px;color:var(--fog);letter-spacing:1px;text-transform:uppercase;}
+.rh-r{font-size:10px;color:var(--jadel);font-weight:700;}
+.stop{margin:0 14px 7px;background:var(--ink4);border:1px solid rgba(255,255,255,0.04);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:9px;}
+.stop.done{opacity:.45;}
+.stop.active{border-color:rgba(74,138,232,0.35);background:var(--sapf);}
+.stop-n{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
+.sn-d{background:var(--jadef);color:var(--jadel);}
+.sn-a{background:var(--sapf);color:var(--sapl);}
+.sn-p{background:rgba(42,56,72,0.8);color:var(--fog);}
+.stop-info strong{font-size:11px;font-weight:600;display:block;margin-bottom:2px;}
+.stop-info span{font-size:9px;color:var(--fog);}
+.stop-qr{font-size:16px;margin-left:auto;}
+.qr-cta{margin:6px 14px 10px;background:var(--sapl);border:none;border-radius:10px;padding:12px;width:calc(100% - 28px);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:white;}
+.pay-cap{margin:0 14px 10px;background:var(--ink4);border:1px solid rgba(240,160,32,0.15);border-radius:10px;padding:11px 13px;}
+.pay-tit{font-family:'DM Mono',monospace;font-size:9px;color:var(--sunl);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:9px;}
+.pay-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
+.pay-m{background:var(--ink5);border:1px solid rgba(255,255,255,0.05);border-radius:7px;padding:8px 4px;text-align:center;}
+.pay-m.sel{border-color:rgba(240,160,32,0.4);background:var(--sunf);}
+.pay-m-ico{font-size:15px;margin-bottom:3px;}
+.pay-m-lbl{font-size:8px;color:var(--fog);}
+.pay-m.sel .pay-m-lbl{color:var(--sunl);}
+.dir-strip{margin:0 14px 8px;}
+.dir-tit{font-family:'DM Mono',monospace;font-size:9px;color:var(--fog);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;}
+.dir-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.dm{background:var(--ink4);border-radius:8px;padding:9px 4px;text-align:center;}
+.dm-ico{font-size:16px;margin-bottom:3px;}
+.dm-cnt{font-size:10px;font-weight:700;color:var(--g2);}
+.dm-lbl{font-size:8px;color:var(--fog);}
+
+/* ── ROLES ── */
+.roles-grid{display:flex;flex-direction:column;gap:16px;}
+.role-card{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);}
+.role-card.gold{border-color:rgba(184,150,46,0.25);}
+.role-head{padding:20px 22px 16px;display:flex;align-items:center;gap:12px;background:var(--ink3);border-bottom:1px solid rgba(255,255,255,0.04);}
+.role-ico{font-size:28px;}
+.role-name{font-size:16px;font-weight:700;display:block;margin-bottom:4px;}
+.role-tag{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:100px;display:inline-block;}
+.rt-s{background:var(--sapf);color:var(--sapl);border:1px solid rgba(74,138,232,0.2);}
+.rt-a{background:var(--sunf);color:var(--sunl);border:1px solid rgba(240,160,32,0.2);}
+.rt-g{background:var(--gd);color:var(--g2);border:1px solid var(--gb);}
+.role-body{padding:18px 22px 20px;background:var(--ink3);}
+.role-perms{display:flex;flex-direction:column;gap:10px;}
+.rp{display:flex;align-items:flex-start;gap:10px;font-size:13px;}
+.rp-ico{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0;margin-top:2px;}
+.rp-ok{background:var(--jadef);color:var(--jadel);}
+.rp-no{background:var(--firef);color:var(--firel);}
+.rp-ok-a{background:var(--sunf);color:var(--sunl);}
+.rp-ok-g{background:var(--gd);color:var(--g2);}
+.rp-text{color:var(--fog);line-height:1.5;font-size:13px;}
+.rp-text strong{color:var(--snow);font-weight:600;}
+.role-note{margin-top:14px;padding:10px 14px;border-radius:9px;font-size:12px;line-height:1.7;}
+.rn-s{background:var(--sapf);color:var(--sapl);border:1px solid rgba(74,138,232,0.15);}
+.rn-a{background:var(--sunf);color:var(--sunl);border:1px solid rgba(240,160,32,0.15);}
+.rn-g{background:var(--gd);color:var(--g2);border:1px solid var(--gb);}
+
+/* ── ADMIN ── */
+.admin-device{background:var(--ink2);border:1px solid rgba(184,150,46,0.12);border-radius:16px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.6);}
+.admin-top{background:var(--ink3);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.04);}
+.at-title{font-size:14px;font-weight:700;}
+.at-sub{font-size:10px;color:var(--fog);}
+.at-live{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:10px;color:var(--jadel);}
+.at-live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--jadel);animation:pulse 1.5s infinite;}
+.admin-kpis{display:grid;grid-template-columns:repeat(2,1fr);border-bottom:1px solid rgba(255,255,255,0.04);}
+.ak{padding:14px 16px;border-right:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04);}
+.ak:nth-child(even){border-right:none;}
+.ak-n{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--g2);line-height:1;display:block;}
+.ak-l{font-family:'DM Mono',monospace;font-size:8px;color:var(--fog);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;display:block;}
+.ak-d{font-size:10px;margin-top:3px;}
+.dk-g{color:var(--jadel);}
+.dk-r{color:var(--firel);}
+.dk-a{color:var(--sunl);}
+.admin-section{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.admin-section:last-child{border-bottom:none;}
+.admin-sec-head{font-family:'DM Mono',monospace;font-size:9px;color:var(--fog);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.vrow{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.vr-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
+.av-j{background:var(--jadef);color:var(--jadel);}
+.av-s{background:var(--sapf);color:var(--sapl);}
+.av-g{background:var(--gd);color:var(--g2);}
+.av-sun{background:var(--sunf);color:var(--sunl);}
+.vr-inf{flex:1;}
+.vr-name{font-size:11px;font-weight:600;}
+.vr-sub{font-size:9px;color:var(--fog);}
+.vr-amt{font-size:11px;font-weight:700;color:var(--g2);}
+.tr-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.tr-ico{font-size:18px;flex-shrink:0;}
+.tr-inf{flex:1;}
+.tr-name{font-size:11px;font-weight:600;}
+.tr-dest{font-size:9px;color:var(--fog);}
+.tr-st{font-size:10px;font-weight:700;}
+.ts-ok{color:var(--jadel);}
+.ts-off{color:var(--sunl);}
+.ts-done{color:var(--sapl);}
+
+/* ── EXPERTO ── */
+.exp-grid{display:flex;flex-direction:column;gap:16px;}
+.exp-card{background:var(--ink3);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:28px 22px;position:relative;overflow:hidden;}
+.exp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--g),transparent);}
+.exp-badge{font-family:'DM Mono',monospace;font-size:9px;color:var(--g);letter-spacing:2px;text-transform:uppercase;background:var(--gd);border:1px solid var(--gb);padding:4px 10px;border-radius:100px;display:inline-block;margin-bottom:14px;}
+.exp-ico{font-size:28px;margin-bottom:12px;display:block;}
+.exp-t{font-size:16px;font-weight:700;margin-bottom:10px;}
+.exp-d{font-size:13px;color:var(--fog);line-height:1.8;}
+.exp-note{margin-top:14px;background:var(--gd);border-left:2px solid var(--g);border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:var(--g2);line-height:1.7;}
+
+/* ── COSTOS ── */
+.costos-grid{display:flex;flex-direction:column;gap:16px;margin-bottom:32px;}
+.costo-card{background:var(--ink3);border:1px solid rgba(255,255,255,0.05);border-radius:16px;overflow:hidden;}
+.costo-head{padding:18px 20px 14px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.costo-service{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.costo-ico{font-size:24px;}
+.costo-name{font-size:15px;font-weight:700;}
+.costo-desc{font-size:11px;color:var(--fog);line-height:1.5;margin-bottom:10px;}
+.costo-price{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.price-free{background:var(--jadef);color:var(--jadel);border:1px solid rgba(24,196,122,0.2);font-family:'DM Mono',monospace;font-size:10px;font-weight:700;padding:5px 14px;border-radius:100px;letter-spacing:1px;}
+.price-paid{background:var(--gd);color:var(--g2);border:1px solid var(--gb);font-family:'DM Mono',monospace;font-size:10px;font-weight:700;padding:5px 14px;border-radius:100px;letter-spacing:1px;}
+.price-note{font-size:11px;color:var(--fog);}
+.costo-body{padding:14px 20px;}
+.costo-uses{display:flex;flex-direction:column;gap:8px;}
+.cu{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--fog);}
+.cu-dot{width:5px;height:5px;border-radius:50%;background:var(--g);flex-shrink:0;margin-top:5px;}
+.costo-total-card{background:linear-gradient(135deg,rgba(184,150,46,0.08),rgba(184,150,46,0.03));border:1px solid var(--gb);border-radius:16px;padding:28px 22px;text-align:center;}
+.ct-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--g);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+.ct-amount{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:700;color:var(--g2);line-height:1;display:block;margin-bottom:8px;}
+.ct-sub{font-size:13px;color:var(--fog);line-height:1.7;}
+.ct-note{margin-top:16px;font-size:12px;color:var(--g2);background:var(--gd);border-radius:8px;padding:10px 14px;line-height:1.6;}
+
+/* ── PWA ── */
+.pwa-hero{background:var(--ink3);border:1px solid rgba(184,150,46,0.15);border-radius:16px;padding:28px 22px;margin-bottom:20px;}
+.pwa-verdict{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,9vw,54px);font-weight:700;color:var(--g2);line-height:.95;margin-bottom:12px;letter-spacing:-0.5px;}
+.pwa-sub{font-size:14px;color:var(--fog);line-height:1.85;font-weight:300;margin-bottom:20px;}
+.pwa-reasons{display:flex;flex-direction:column;gap:10px;}
+.pwa-r{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--fog);}
+.pwa-r-ico{color:var(--g);flex-shrink:0;}
+.pwa-compare{display:flex;flex-direction:column;gap:12px;}
+.pwa-col{border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);}
+.pwa-col-h{padding:16px 18px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.pwa-col-b{padding:8px 18px 18px;}
+.pc-bad .pwa-col-h{color:var(--firel);}
+.pc-mid .pwa-col-h{color:var(--sunl);}
+.pc-good{border-color:rgba(24,196,122,0.2);}
+.pc-good .pwa-col-h{color:var(--jadel);}
+.pwa-item{font-size:12px;color:var(--fog);padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;align-items:flex-start;gap:7px;line-height:1.5;}
+.pwa-item:last-child{border-bottom:none;}
+.pi-ok{color:var(--jadel);flex-shrink:0;}
+.pi-no{color:var(--firel);flex-shrink:0;}
+
+/* ── DIRECTORIO ── */
+.dir-device{background:var(--ink2);border:1px solid rgba(184,150,46,0.12);border-radius:16px;overflow:hidden;}
+.dir-top{background:var(--ink3);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.04);}
+.dir-city-tag{background:var(--sunf);border:1px solid rgba(240,160,32,0.2);color:var(--sunl);font-family:'DM Mono',monospace;font-size:9px;padding:4px 10px;border-radius:100px;letter-spacing:1px;}
+.dir-tabs3{display:flex;background:var(--ink4);margin:10px 14px 8px;border-radius:8px;padding:3px;}
+.dir-tab3{flex:1;padding:7px;border:none;background:none;font-family:'Outfit',sans-serif;font-size:10px;font-weight:600;color:var(--fog);border-radius:6px;cursor:pointer;text-align:center;}
+.dir-tab3.on{background:var(--ink2);color:var(--snow);}
+.dir-e{margin:0 14px 8px;background:var(--ink4);border:1px solid rgba(255,255,255,0.04);border-radius:10px;padding:12px 13px;display:flex;align-items:flex-start;gap:10px;}
+.dir-e-ico{font-size:20px;flex-shrink:0;margin-top:1px;}
+.dir-e-name{font-size:12px;font-weight:700;margin-bottom:2px;}
+.dir-e-sub{font-size:10px;color:var(--fog);margin-bottom:4px;}
+.dir-e-by{font-size:9px;color:var(--mist);display:flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;}
+.dir-e-by-dot{width:4px;height:4px;border-radius:50%;background:var(--jadel);}
+.dir-add{margin:8px 14px 14px;background:var(--gd);border:1px dashed var(--gb);border-radius:10px;padding:11px;width:calc(100% - 28px);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--g);letter-spacing:1px;}
+
+/* ── DEMO CTA ── */
+.demo-cta-sec{background:linear-gradient(135deg,rgba(15,102,68,0.15),rgba(15,102,68,0.05));border:1px solid rgba(24,196,122,0.2);border-radius:20px;padding:36px 24px;text-align:center;margin-bottom:24px;}
+.demo-cta-ico{font-size:48px;margin-bottom:16px;}
+.demo-cta-date{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,9vw,56px);font-weight:700;color:var(--jadel);line-height:1;margin-bottom:8px;}
+.demo-cta-sub{font-size:15px;color:var(--fog);line-height:1.8;margin-bottom:24px;font-weight:300;}
+.demo-cta-details{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.dcd{display:flex;align-items:center;gap:10px;background:var(--ink3);border-radius:10px;padding:12px 16px;}
+.dcd-ico{font-size:18px;flex-shrink:0;}
+.dcd-t{font-size:13px;font-weight:600;color:var(--snow);}
+.dcd-s{font-size:11px;color:var(--fog);}
+.btn-jade{background:linear-gradient(135deg,var(--jade),var(--jadel));color:white;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:16px 32px;border:none;border-radius:10px;cursor:pointer;width:100%;display:block;text-decoration:none;margin-bottom:12px;}
+.btn-outline-jade{background:transparent;color:var(--jadel);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;padding:14px 32px;border:1px solid rgba(24,196,122,0.3);border-radius:10px;cursor:pointer;width:100%;display:block;text-decoration:none;}
+
+/* ── CTA FINAL ── */
+.cta-sec{text-align:center;padding:72px 24px;border-top:1px solid rgba(184,150,46,0.08);position:relative;overflow:hidden;}
+.cta-glow{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(184,150,46,0.05) 0%,transparent 60%);pointer-events:none;}
+.cta-h{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,12vw,90px);font-weight:300;line-height:.9;letter-spacing:-1px;margin-bottom:20px;position:relative;z-index:1;}
+.cta-h strong{font-weight:700;display:block;}
+.cta-h em{color:var(--g2);font-style:italic;}
+.cta-d{font-size:15px;color:var(--fog);max-width:340px;margin:0 auto 40px;line-height:1.85;font-weight:300;position:relative;z-index:1;}
+.cta-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:48px;position:relative;z-index:1;}
+.cc{background:var(--ink3);border:1px solid rgba(255,255,255,0.05);border-radius:12px;padding:16px 8px;text-align:center;}
+.cc-n{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--g2);line-height:1;}
+.cc-l{font-family:'DM Mono',monospace;font-size:8px;color:var(--fog);letter-spacing:1.5px;text-transform:uppercase;margin-top:5px;}
+
+/* ── FOOTER ── */
+footer{padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:8px;border-top:1px solid rgba(255,255,255,0.04);text-align:center;}
+.fl{display:flex;align-items:center;gap:8px;}
+.fl-mark{width:26px;height:26px;border:1.5px solid var(--g);border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:700;color:var(--g);}
+.fl-text{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;letter-spacing:2px;text-transform:uppercase;}
+.ft{font-family:'DM Mono',monospace;font-size:9px;color:var(--mist);letter-spacing:1px;}
+
+/* ── UTILS ── */
+.tag-pill{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;border-radius:100px;}
+
+@media(min-width:768px){
+  nav{padding:0 40px;height:64px;}
+  .sec{padding:96px 48px;}
+  .hero{padding:80px 48px 64px;}
+  .hero-h1{font-size:clamp(70px,9vw,120px);}
+  .hero-chips{grid-template-columns:repeat(5,1fr);max-width:600px;}
+  .prob-grid,.roles-grid,.exp-grid,.costos-grid{display:grid;grid-template-columns:repeat(3,1fr);}
+  .roles-grid,.costos-grid{grid-template-columns:repeat(3,1fr);}
+  .admin-kpis{grid-template-columns:repeat(3,1fr);}
+  .pwa-compare{display:grid;grid-template-columns:repeat(3,1fr);}
+  .app-block{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  .cta-chips{grid-template-columns:repeat(6,1fr);}
+  .demo-cta-details{flex-direction:row;flex-wrap:wrap;}
+  .dcd{flex:1;min-width:200px;}
+  footer{flex-direction:row;justify-content:space-between;padding:24px 48px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo">
+    <div class="logo-mark">R</div>
+    <div class="logo-text">Royal Paint</div>
+  </div>
+  <button class="nav-demo-btn" onclick="go('demo-viernes')">🗓️ Demo Viernes</button>
+</nav>
+
+<!-- DEMO BANNER -->
+<div class="demo-banner">
+  <div class="demo-banner-inner">
+    <div class="demo-pulse"></div>
+    <div>
+      <div class="demo-text">📅 DEMO EN VIVO — ESTE VIERNES</div>
+      <div class="demo-sub">El CEO verá las apps funcionando con sus propios ojos</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="hero-badge-dot"></span>Propuesta Ejecutiva · Royal Paint 2025</div>
+    <h1 class="hero-h1">Royal Paint<br><strong>Digital.</strong><br><em>El ecosistema.</em></h1>
+    <p class="hero-sub">Dos aplicaciones que digitalizan las operaciones críticas de su empresa — ventas con IA y logística con rutas inteligentes. Diseñadas para Venezuela: offline, eficientes y con control total para el CEO.</p>
+    <div class="hero-btns">
+      <a class="btn-gold" onclick="go('apps');return false;">Ver las apps →</a>
+      <a class="btn-ghost" onclick="go('demo-viernes');return false;">Demo viernes</a>
+    </div>
+    <div class="hero-chips">
+      <div class="hc"><span class="hc-n">2</span><span class="hc-l">Apps PWA</span></div>
+      <div class="hc"><span class="hc-n">3</span><span class="hc-l">Roles acceso</span></div>
+      <div class="hc"><span class="hc-n">IA</span><span class="hc-l">OCR talonarios</span></div>
+      <div class="hc"><span class="hc-n">📶</span><span class="hc-l">Offline</span></div>
+      <div class="hc"><span class="hc-n">$+Bs</span><span class="hc-l">Doble moneda</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ PROBLEMA ═══ -->
+<section class="sec" id="problema">
+  <p class="ey r">El diagnóstico</p>
+  <h2 class="sh r">Royal Paint opera<br><strong>en modo manual.</strong><br><em>Eso tiene solución.</em></h2>
+  <p class="sd r">Tres problemas reales — y la tecnología concreta para resolverlos.</p>
+  <div class="prob-grid">
+    <div class="prob-card r">
+      <span class="prob-ico">📋</span>
+      <div class="prob-t">Pedidos en papel sin trazabilidad</div>
+      <p class="prob-d">Los talonarios manuales generan errores, pedidos perdidos y retrasos. Un vendedor desperdicia horas en burocracia que la IA hace en 3 segundos.</p>
+      <div class="prob-tag pt-g">✓ Resuelto — OCR con IA</div>
+    </div>
+    <div class="prob-card r2">
+      <span class="prob-ico">🚚</span>
+      <div class="prob-t">Choferes sin guía ni trazabilidad</div>
+      <p class="prob-d">Rutas sin optimización, entregas sin confirmación, sin registro de cobros. Un incidente en carretera hoy paraliza la operación completa.</p>
+      <div class="prob-tag pt-b">✓ Resuelto — Rutas + QR + Cobros</div>
+    </div>
+    <div class="prob-card r3">
+      <span class="prob-ico">👁️</span>
+      <div class="prob-t">El CEO opera a ciegas</div>
+      <p class="prob-d">Sin datos en tiempo real, las decisiones se toman con información de ayer. Vendedores, camiones y cartera sin visibilidad centralizada.</p>
+      <div class="prob-tag pt-v">✓ Resuelto — Panel CEO en vivo</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ APPS ═══ -->
+<section class="sec" id="apps">
+  <p class="ey r">Las aplicaciones</p>
+  <h2 class="sh r">Dos apps.<br><strong>Un solo ecosistema</strong><br><em>Royal Paint.</em></h2>
+
+  <!-- APP 1 -->
+  <div class="app-block" style="margin-bottom:56px;">
+    <div>
+      <div class="app-num r">01</div>
+      <div class="app-chip ac-j r">📦 Vendedores</div>
+      <h3 class="app-title r">Royal Ventas</h3>
+      <p class="app-sub r">La app para el equipo comercial. Funciona en cualquier celular sin instalar nada. Fotografía el talonario, la IA lo procesa, el vendedor confirma — pedido registrado en segundos.</p>
+      <div class="feat-list r">
+        <div class="feat"><div class="feat-ico fi-j">📸</div><div class="feat-body"><strong>OCR con IA — foto del talonario → pedido digital</strong><p>La IA extrae todos los datos. El vendedor ve una previsualización y confirma antes de guardar. Cero errores de transcripción.</p></div></div>
+        <div class="feat"><div class="feat-ico fi-j">📊</div><div class="feat-body"><strong>Meta mensual visible en tiempo real <span class="feat-new">nuevo</span></strong><p>Barra de progreso con cuánto lleva vs su cuota del mes. El vendedor sabe exactamente dónde está sin preguntar a nadie.</p></div></div>
+        <div class="feat"><div class="feat-ico fi-j">🔔</div><div class="feat-body"><strong>Alertas de clientes recurrentes <span class="feat-new">nuevo</span></strong><p>Si un cliente que compra semanal lleva 10 días sin pedido, la app alerta al vendedor. Retención automática.</p></div></div>
+        <div class="feat"><div class="feat-ico fi-j">💰</div><div class="feat-body"><strong>Cartera en tiempo real — Bs. y USD</strong><p>Facturas pendientes, vencidas y cobradas con doble moneda. Alertas de deudas próximas a vencer.</p></div></div>
+      </div>
+    </div>
+    <div class="r2">
+      <div class="device">
+        <div class="device-bar"><div class="device-dots"><div class="dd dd1"></div><div class="dd dd2"></div><div class="dd dd3"></div></div><div class="device-url">royalpaint.app/ventas</div></div>
+        <div>
+          <div class="sv-header"><div style="display:flex;align-items:center;gap:10px;"><div class="sv-ava">CP</div><div><div class="sv-name">Royal Ventas</div><div class="sv-role">Carlos Pérez · Zona Norte</div></div></div><span style="font-size:20px;">🔔</span></div>
+          <div class="meta-bar"><div class="meta-top"><span class="meta-lbl">Meta julio</span><span class="meta-pct">73%</span></div><div class="meta-track"><div class="meta-fill"></div></div><div class="meta-nums"><span style="font-size:11px;color:var(--snow);">$3,200 logrados</span><span style="font-size:11px;color:var(--fog);">Meta: $4,400</span></div></div>
+          <div class="alerta-strip"><span class="as-ico">🔔</span><div><div class="as-t">Ferretería La Torre — 11 días sin comprar</div><div class="as-s">Cliente recurrente semanal</div></div></div>
+          <button class="ocr-btn"><span class="ocr-ico">📸</span><div class="ocr-t"><strong>Cargar pedido con IA</strong><span>Fotografía el talonario</span></div></button>
+          <div class="ocr-prev"><div class="ocr-prev-h"><div class="ocr-dot"></div><div class="ocr-prev-lbl">IA detectó — confirma antes de guardar</div></div><div class="ocr-fields"><div class="ocr-f"><div class="ocr-fl">Cliente</div><div class="ocr-fv ai">Ferretería El Clavo</div></div><div class="ocr-f"><div class="ocr-fl">Total</div><div class="ocr-fv ai">$284.00</div></div><div class="ocr-f"><div class="ocr-fl">Producto</div><div class="ocr-fv">Látex 4L ×6</div></div><div class="ocr-f"><div class="ocr-fl">Fecha</div><div class="ocr-fv ai">15/07/2025</div></div></div><div class="ocr-acts"><button class="ocr-confirm">✓ Confirmar</button><button class="ocr-fix">✎ Corregir</button></div></div>
+          <div class="sv-tabs"><button class="sv-tab on">Cartera</button><button class="sv-tab">Pedidos</button><button class="sv-tab">Clientes</button></div>
+          <div class="sv-card"><div class="sv-card-top"><div class="sv-cn">Ferretería El Clavo</div><div class="sv-bdg bv">Vencida</div></div><div class="sv-amt">$84 · Bs. 3,100</div><div class="sv-sub">Hace 12 días · Fac. #0041</div><div class="sv-pay">💵 Efectivo USD</div></div>
+          <div class="sv-card"><div class="sv-card-top"><div class="sv-cn">Construcciones Ramos</div><div class="sv-bdg bc">Por cobrar</div></div><div class="sv-amt">$127 · Bs. 4,674</div><div class="sv-sub">Vence en 5 días · Fac. #0049</div><div class="sv-pay">📱 Pago Móvil</div></div>
+          <div class="sv-met"><div class="sv-m"><div class="sv-mn">18</div><div class="sv-ml">Pedidos mes</div></div><div class="sv-m"><div class="sv-mn">73%</div><div class="sv-ml">Meta</div></div><div class="sv-m"><div class="sv-mn">4</div><div class="sv-ml">Vencidas</div></div><div class="sv-m"><div class="sv-mn">3</div><div class="sv-ml">Nuevos</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP 2 -->
+  <div class="app-block">
+    <div>
+      <div class="app-num r">02</div>
+      <div class="app-chip ac-b r">🚚 Choferes</div>
+      <h3 class="app-title r">Royal Despacho</h3>
+      <p class="app-sub r">Para mini-tablets instaladas en el camión. Funciona 100% sin internet. Desde que sale de Maracay, guía cada entrega, registra el cobro y protege a Royal Paint con evidencia fotográfica.</p>
+      <div class="feat-list r">
+        <div class="feat"><div class="feat-ico fi-b">📍</div><div class="feat-body"><strong>Navegación — integra el QR existente</strong><p>El QR actual ya contiene el enlace de Google Maps. La app lo lee y lanza navegación automáticamente. Sin cambiar nada del sistema actual.</p></div></div>
+        <div class="feat"><div class="feat-ico fi-b">📷</div><div class="feat-body"><strong>Confirmación QR + foto de evidencia <span class="feat-new">nuevo</span></strong><p>Escanea el QR y toma foto del bulto entregado. Protección legal completa. Guardado offline sin señal.</p></div></div>
+        <div class="feat"><div class="feat-ico fi-b">💳</div><div class="feat-body"><strong>Registro de cobro por entrega <span class="feat-new">nuevo</span></strong><p>Solo visible para el chofer de confianza. USD, Bs., Zelle o Pago Móvil. El CEO ve el cuadre de caja en tiempo real.</p></div></div>
+        <div class="feat"><div class="feat-ico fi-b">🔋</div><div class="feat-body"><strong>Modo ahorro de batería <span class="feat-new">nuevo</span></strong><p>Bajo el 20%: fondo negro total, sin animaciones, solo lo esencial. Crítico para choferes sin cargador en el camión.</p></div></div>
+      </div>
+    </div>
+    <div class="r2">
+      <div class="device">
+        <div class="device-bar"><div class="device-dots"><div class="dd dd1"></div><div class="dd dd2"></div><div class="dd dd3"></div></div><div class="device-url">royalpaint.app/despacho</div></div>
+        <div>
+          <div class="map-b"><div class="map-road"></div><div class="map-route"></div><div class="map-offline">SIN SEÑAL · OFFLINE</div><div class="map-truck">🚚</div><div class="map-pin">📍</div><div class="map-eta"><div><div class="map-eta-dest">→ Distribuidora El Sur, Valencia</div><div class="map-eta-sub">Siguiente parada · 18 bultos</div></div><div class="map-eta-t">1h 24m</div></div></div>
+          <div class="batt-b"><span style="font-size:14px;">🔋</span><div><div class="bb-t">Modo ahorro — batería 18%</div><div class="bb-s">Interfaz simplificada activa</div></div></div>
+          <div class="offline-b"><span class="ob-ico">📶</span><div><div class="ob-t">3 entregas guardadas offline</div><div class="ob-s">Se sincronizarán al recuperar señal</div></div></div>
+          <div class="ruta-h"><span class="rh-l">Ruta del día · 5 paradas</span><span class="rh-r">2/5 ✓</span></div>
+          <div class="stop done"><div class="stop-n sn-d">✓</div><div class="stop-info"><strong>Ferretería Central</strong><span>08:32am · 12 bultos · QR+foto ✓</span></div></div>
+          <div class="stop done"><div class="stop-n sn-d">✓</div><div class="stop-info"><strong>Pinturas Express</strong><span>09:15am · 8 bultos · QR+foto ✓</span></div></div>
+          <div class="stop active"><div class="stop-n sn-a">3</div><div class="stop-info"><strong>Distribuidora El Sur</strong><span>En camino · 18 bultos</span></div><span class="stop-qr">📷</span></div>
+          <div class="stop"><div class="stop-n sn-p">4</div><div class="stop-info"><strong>Comercial Andes</strong><span>Pendiente · 6 bultos</span></div></div>
+          <button class="qr-cta">📷 Escanear QR + foto de entrega</button>
+          <div class="pay-cap"><div class="pay-tit">💳 Registrar cobro — solo tú ves esto</div><div class="pay-grid"><div class="pay-m sel"><div class="pay-m-ico">💵</div><div class="pay-m-lbl">USD</div></div><div class="pay-m"><div class="pay-m-ico">💴</div><div class="pay-m-lbl">Bs.</div></div><div class="pay-m"><div class="pay-m-ico">💸</div><div class="pay-m-lbl">Zelle</div></div><div class="pay-m"><div class="pay-m-ico">📱</div><div class="pay-m-lbl">Pago Móvil</div></div></div></div>
+          <div class="dir-strip"><div class="dir-tit">Directorio Valencia (offline)</div><div class="dir-mini"><div class="dm"><div class="dm-ico">🏨</div><div class="dm-cnt">4</div><div class="dm-lbl">Hoteles</div></div><div class="dm"><div class="dm-ico">🍽️</div><div class="dm-cnt">7</div><div class="dm-lbl">Comida</div></div><div class="dm"><div class="dm-ico">🔧</div><div class="dm-cnt">3</div><div class="dm-lbl">Mecánicos</div></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ ROLES ═══ -->
+<section class="sec" id="roles">
+  <p class="ey r">Control de acceso</p>
+  <h2 class="sh r">Tres roles.<br><strong>Cada quien ve</strong><br><em>solo lo que le toca.</em></h2>
+  <p class="sd r">Los montos y datos financieros son invisibles para quienes no deben verlos — por diseño del sistema.</p>
+  <div class="roles-grid">
+    <div class="role-card r"><div class="role-head"><span class="role-ico">🚚</span><div><span class="role-name">Chofer Regular</span><span class="role-tag rt-s">Acceso básico</span></div></div><div class="role-body"><div class="role-perms"><div class="rp"><div class="rp-ico rp-ok">✓</div><div class="rp-text"><strong>Ruta del día</strong> — clientes, paradas y GPS</div></div><div class="rp"><div class="rp-ico rp-ok">✓</div><div class="rp-text"><strong>Escaneo QR</strong> + foto de evidencia</div></div><div class="rp"><div class="rp-ico rp-ok">✓</div><div class="rp-text"><strong>Directorio</strong> — consulta y agrega lugares</div></div><div class="rp"><div class="rp-ico rp-no">✗</div><div class="rp-text"><strong>No ve montos</strong> — ni cobros ni facturas</div></div><div class="rp"><div class="rp-ico rp-no">✗</div><div class="rp-text"><strong>No ve</strong> valor de la carga</div></div></div><div class="role-note rn-s">Solo ve nombres de clientes, paradas y el botón de confirmar. Nada más.</div></div></div>
+    <div class="role-card r2"><div class="role-head"><span class="role-ico">🔑</span><div><span class="role-name">Chofer de Confianza</span><span class="role-tag rt-a">Acceso especial</span></div></div><div class="role-body"><div class="role-perms"><div class="rp"><div class="rp-ico rp-ok">✓</div><div class="rp-text"><strong>Todo lo del chofer regular</strong></div></div><div class="rp"><div class="rp-ico rp-ok-a">✓</div><div class="rp-text"><strong>Montos de cobro</strong> por cliente</div></div><div class="rp"><div class="rp-ico rp-ok-a">✓</div><div class="rp-text"><strong>Registra el método de pago</strong> — USD, Bs., Zelle, Pago Móvil</div></div><div class="rp"><div class="rp-ico rp-ok-a">✓</div><div class="rp-text"><strong>Total del viaje</strong> cobrado vs faltante</div></div><div class="rp"><div class="rp-ico rp-no">✗</div><div class="rp-text"><strong>No ve</strong> otros camiones ni vendedores</div></div></div><div class="role-note rn-a">Solo ve los montos de su propio viaje del día.</div></div></div>
+    <div class="role-card gold r3"><div class="role-head"><span class="role-ico">👑</span><div><span class="role-name">CEO — Acceso Dios</span><span class="role-tag rt-g">Sin restricciones</span></div></div><div class="role-body"><div class="role-perms"><div class="rp"><div class="rp-ico rp-ok-g">✓</div><div class="rp-text"><strong>Todo en tiempo real</strong> — vendedores, choferes, rutas</div></div><div class="rp"><div class="rp-ico rp-ok-g">✓</div><div class="rp-text"><strong>Todos los montos</strong> — Bs. y USD</div></div><div class="rp"><div class="rp-ico rp-ok-g">✓</div><div class="rp-text"><strong>Cuadre de caja</strong> completo por método</div></div><div class="rp"><div class="rp-ico rp-ok-g">✓</div><div class="rp-text"><strong>Gestión de usuarios</strong> y roles</div></div><div class="rp"><div class="rp-ico rp-ok-g">✓</div><div class="rp-text"><strong>Configura tasa</strong> Bs./USD desde el panel</div></div></div><div class="role-note rn-g">Control absoluto. Nadie ve más de lo que el CEO permite.</div></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ ADMIN PANEL ═══ -->
+<section class="sec" id="admin">
+  <p class="ey r">Para el CEO</p>
+  <h2 class="sh r">Todo el negocio<br><strong>en una pantalla.</strong></h2>
+  <p class="sd r">Vendedores, choferes, cartera y cuadre de caja — en tiempo real, con doble moneda, desde cualquier dispositivo.</p>
+  <div class="r">
+    <div class="admin-device">
+      <div class="admin-top"><div><div class="at-title">Panel Ejecutivo — Royal Paint</div><div class="at-sub">Hoy · Todas las zonas</div></div><div class="at-live">EN VIVO</div></div>
+      <div class="admin-kpis">
+        <div class="ak"><span class="ak-n">$14,820</span><span class="ak-l">Ventas hoy USD</span><div class="ak-d dk-g">↑ 22% vs ayer</div></div>
+        <div class="ak"><span class="ak-n">38</span><span class="ak-l">Pedidos</span><div class="ak-d dk-g">8 por IA hoy</div></div>
+        <div class="ak"><span class="ak-n">7/8</span><span class="ak-l">Camiones</span><div class="ak-d dk-a">1 offline Mcbo</div></div>
+        <div class="ak"><span class="ak-n">$6,240</span><span class="ak-l">Cartera vencida</span><div class="ak-d dk-r">4 facturas</div></div>
+        <div class="ak"><span class="ak-n">$8,340</span><span class="ak-l">Cobrado hoy</span><div class="ak-d dk-g">Multi-método</div></div>
+        <div class="ak"><span class="ak-n">Bs.36.8</span><span class="ak-l">Tasa actual</span><div class="ak-d" style="color:var(--sapl);">Configurable</div></div>
+      </div>
+      <div class="admin-section">
+        <div class="admin-sec-head">Vendedores activos</div>
+        <div class="vrow"><div class="vr-av av-j">CP</div><div class="vr-inf"><div class="vr-name">Carlos Pérez</div><div class="vr-sub">18 pedidos · Zona Norte</div></div><div class="vr-amt">$3,200</div></div>
+        <div class="vrow"><div class="vr-av av-s">MR</div><div class="vr-inf"><div class="vr-name">María Rodríguez</div><div class="vr-sub">12 pedidos · Zona Sur</div></div><div class="vr-amt">$2,840</div></div>
+        <div class="vrow"><div class="vr-av av-sun">JP</div><div class="vr-inf"><div class="vr-name">José Parra</div><div class="vr-sub">9 pedidos · Valencia</div></div><div class="vr-amt">$1,960</div></div>
+      </div>
+      <div class="admin-section">
+        <div class="admin-sec-head">Camiones en tiempo real</div>
+        <div class="tr-row"><span class="tr-ico">🚚</span><div class="tr-inf"><div class="tr-name">Unidad #03 · Pedro Silva</div><div class="tr-dest">Valencia · 3/5 · $2,400 cobrado</div></div><div class="tr-st ts-ok">● Activo</div></div>
+        <div class="tr-row"><span class="tr-ico">🚚</span><div class="tr-inf"><div class="tr-name">Unidad #07 · Ramón Díaz</div><div class="tr-dest">Maracaibo · Sin señal</div></div><div class="tr-st ts-off">● Offline</div></div>
+        <div class="tr-row"><span class="tr-ico">🚚</span><div class="tr-inf"><div class="tr-name">Unidad #02 · Ana Torres</div><div class="tr-dest">Maturín · 5/5 ✓ · $1,890</div></div><div class="tr-st ts-done">● Completó</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ COSTOS ═══ -->
+<section class="sec" id="costos">
+  <p class="ey r">Inversión operativa</p>
+  <h2 class="sh r">Lo que cuestan<br><strong>las herramientas</strong><br><em>que hacen posible todo.</em></h2>
+  <p class="sd r">Transparencia total. Esto es lo que paga Royal Paint para que las apps funcionen cada mes — no son costos del desarrollador.</p>
+
+  <div class="costos-grid">
+    <!-- SUPABASE -->
+    <div class="costo-card r">
+      <div class="costo-head">
+        <div class="costo-service"><span class="costo-ico">🗄️</span><div class="costo-name">Supabase — Base de datos</div></div>
+        <p class="costo-desc">El cerebro de ambas apps. Guarda todos los pedidos, facturas, rutas, usuarios y cobros. Funciona en tiempo real para que el CEO vea todo al instante.</p>
+        <div class="costo-price">
+          <span class="price-free">GRATIS para empezar</span>
+          <span class="price-note">→ $25/mes en producción</span>
+        </div>
+      </div>
+      <div class="costo-body">
+        <div class="costo-uses">
+          <div class="cu"><div class="cu-dot"></div>Plan gratuito: 500MB de base de datos y 1GB de storage — suficiente para los primeros meses</div>
+          <div class="cu"><div class="cu-dot"></div>Plan Pro ($25/mes): para cuando la operación crezca — sin límite de pedidos ni usuarios</div>
+          <div class="cu"><div class="cu-dot"></div>Incluye autenticación, tiempo real, backup automático diario y almacenamiento de fotos</div>
+          <div class="cu"><div class="cu-dot"></div>Sin servidor propio — Supabase lo gestiona todo en la nube</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLAUDE VISION -->
+    <div class="costo-card r2">
+      <div class="costo-head">
+        <div class="costo-service"><span class="costo-ico">🧠</span><div class="costo-name">Claude Vision API — OCR con IA</div></div>
+        <p class="costo-desc">La inteligencia que lee los talonarios. El vendedor toma la foto, esta API extrae el cliente, productos, cantidades y precios automáticamente.</p>
+        <div class="costo-price">
+          <span class="price-paid">~$5/mes en uso normal</span>
+          <span class="price-note">$0.003 por foto procesada</span>
+        </div>
+      </div>
+      <div class="costo-body">
+        <div class="costo-uses">
+          <div class="cu"><div class="cu-dot"></div>Si los vendedores suben 50 talonarios al día → solo $4.50 al mes en total</div>
+          <div class="cu"><div class="cu-dot"></div>El costo más bajo del ecosistema — y es la función más poderosa</div>
+          <div class="cu"><div class="cu-dot"></div>Pago por uso real: si no se usa, no se cobra nada ese mes</div>
+          <div class="cu"><div class="cu-dot"></div>Sin suscripción mensual fija — solo se paga lo que se consume</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GOOGLE MAPS -->
+    <div class="costo-card r3">
+      <div class="costo-head">
+        <div class="costo-service"><span class="costo-ico">🗺️</span><div class="costo-name">Google Maps API — Navegación</div></div>
+        <p class="costo-desc">La navegación de los choferes. Google da $200 de crédito gratuito al mes — para 10 camiones haciendo rutas en Venezuela, ese crédito lo cubre todo.</p>
+        <div class="costo-price">
+          <span class="price-free">Probablemente $0/mes</span>
+          <span class="price-note">$200 crédito gratis de Google</span>
+        </div>
+      </div>
+      <div class="costo-body">
+        <div class="costo-uses">
+          <div class="cu"><div class="cu-dot"></div>Google da $200 USD de crédito gratis cada mes — más que suficiente para la flota de Royal Paint</div>
+          <div class="cu"><div class="cu-dot"></div>El QR existente ya tiene el enlace de Maps — la app simplemente lo lee, reduce el costo</div>
+          <div class="cu"><div class="cu-dot"></div>Si algún mes se superan los $200: el costo adicional es mínimo (~$5-15)</div>
+          <div class="cu"><div class="cu-dot"></div>Sin contratos — se puede ajustar en cualquier momento</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VERCEL -->
+    <div class="costo-card r">
+      <div class="costo-head">
+        <div class="costo-service"><span class="costo-ico">🚀</span><div class="costo-name">Vercel — Hosting de las apps</div></div>
+        <p class="costo-desc">El servidor donde viven las apps. Hace que cualquier persona pueda abrir royalpaint.app desde cualquier celular en Venezuela sin necesidad de WiFi especial.</p>
+        <div class="costo-price">
+          <span class="price-free">GRATIS para empezar</span>
+          <span class="price-note">→ $20/mes si crece el tráfico</span>
+        </div>
+      </div>
+      <div class="costo-body">
+        <div class="costo-uses">
+          <div class="cu"><div class="cu-dot"></div>Plan gratuito cubre perfectamente una operación mediana como Royal Paint</div>
+          <div class="cu"><div class="cu-dot"></div>Actualizar la app es subir el código — todos los dispositivos se actualizan solos</div>
+          <div class="cu"><div class="cu-dot"></div>HTTPS incluido — conexión segura sin costo adicional</div>
+          <div class="cu"><div class="cu-dot"></div>Sin configurar servidores — despliega en 2 minutos con un comando</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOMINIO -->
+    <div class="costo-card r2">
+      <div class="costo-head">
+        <div class="costo-service"><span class="costo-ico">🌐</span><div class="costo-name">Dominio — royalpaint.app</div></div>
+        <p class="costo-desc">La dirección propia de las apps. En vez de una dirección genérica, los choferes y vendedores acceden a una dirección de Royal Paint.</p>
+        <div class="costo-price">
+          <span class="price-paid">~$15/año</span>
+          <span class="price-note">Menos de $2 al mes</span>
+        </div>
+      </div>
+      <div class="costo-body">
+        <div class="costo-uses">
+          <div class="cu"><div class="cu-dot"></div>Se paga una vez al año — el costo más pequeño de todo el ecosistema</div>
+          <div class="cu"><div class="cu-dot"></div>Queda como propiedad de Royal Paint permanentemente</div>
+          <div class="cu"><div class="cu-dot"></div>Profesional y fácil de recordar para el equipo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOTAL -->
+    <div class="costo-card r3" style="border-color:var(--gb);background:linear-gradient(135deg,rgba(184,150,46,0.06),transparent);">
+      <div class="costo-head">
+        <div class="costo-service"><span class="costo-ico">📊</span><div class="costo-name">Resumen de costos</div></div>
+        <p class="costo-desc">Todos los servicios juntos para que las dos apps de Royal Paint funcionen al 100% en producción cada mes.</p>
+        <div class="costo-price">
+          <span class="price-paid">$50–70 USD / mes total</span>
+        </div>
+      </div>
+      <div class="costo-body">
+        <div class="costo-uses">
+          <div class="cu"><div class="cu-dot"></div>Supabase Pro: $25/mes</div>
+          <div class="cu"><div class="cu-dot"></div>Claude Vision API: ~$5/mes</div>
+          <div class="cu"><div class="cu-dot"></div>Google Maps: $0 (crédito gratuito)</div>
+          <div class="cu"><div class="cu-dot"></div>Vercel: $0–$20/mes</div>
+          <div class="cu"><div class="cu-dot"></div>Dominio: ~$1.25/mes (prorrateado)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="costo-total-card r">
+    <div class="ct-label">Costo operativo mensual total</div>
+    <span class="ct-amount">~$55</span>
+    <div class="ct-sub">Por mes para mantener ambas apps funcionando con todos los servicios — base de datos, IA para talonarios, mapas, hosting y dominio propio.</div>
+    <div class="ct-note">💡 Esto no es un costo del desarrollador — son los servicios externos que hacen posible la tecnología. Es parte del presupuesto operativo de Royal Paint, como se paga el internet o el teléfono. A medida que la operación crezca, estos costos escalan muy gradualmente.</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ EXPERTO ═══ -->
+<section class="sec" id="experto">
+  <p class="ey r">Recomendaciones del desarrollador</p>
+  <h2 class="sh r">Lo que el CEO<br><strong>no mencionó</strong> —<br><em>pero es crítico.</em></h2>
+  <p class="sd r">Seis funciones que ningún otro desarrollador va a proponer — pero que marcan la diferencia entre una app que dura y una que se abandona.</p>
+  <div class="exp-grid">
+    <div class="exp-card r"><div class="exp-badge">Recomendación #1</div><span class="exp-ico">📶</span><div class="exp-t">Modo Offline obligatorio</div><p class="exp-d">Los choferes viajan a Maracaibo, Maturín y carreteras sin señal. Si la app depende del internet, queda inutilizable exactamente cuando más se necesita.</p><div class="exp-note">La app guarda ruta, clientes y QR localmente. Registra offline y sube todo cuando recupera señal. El CEO ve el estado real desde Maracay.</div></div>
+    <div class="exp-card r2"><div class="exp-badge">Recomendación #2</div><span class="exp-ico">👁️</span><div class="exp-t">Previsualización de IA antes de guardar</div><p class="exp-d">La IA puede leer mal un número si el talonario está manchado. Sin validación humana, ese error se convierte en un pedido incorrecto procesado.</p><div class="exp-note">El vendedor confirma cada dato antes de guardar. Cero pedidos erróneos. La confianza en el sistema se construye desde la primera semana.</div></div>
+    <div class="exp-card r3"><div class="exp-badge">Recomendación #3</div><span class="exp-ico">📷</span><div class="exp-t">Evidencia fotográfica de cada entrega</div><p class="exp-d">En Venezuela los "yo nunca recibí eso" son frecuentes. Sin foto de evidencia, Royal Paint no tiene forma de probar que la entrega se realizó.</p><div class="exp-note">Foto del bulto con timestamp y geolocalización. Protección legal completa. Se guarda offline si no hay señal.</div></div>
+    <div class="exp-card r"><div class="exp-badge">Recomendación #4</div><span class="exp-ico">💳</span><div class="exp-t">Registro de método de pago</div><p class="exp-d">Como los clientes pagan en efectivo USD, Bs., Zelle y Pago Móvil mezclados, el cuadre de caja del CEO es imposible sin saber quién pagó qué y cómo.</p><div class="exp-note">El chofer de confianza registra el método al cobrar. El CEO ve el cuadre completo desglosado por método y camión en tiempo real.</div></div>
+    <div class="exp-card r2"><div class="exp-badge">Recomendación #5</div><span class="exp-ico">🔋</span><div class="exp-t">Modo ahorro de batería</div><p class="exp-d">Algunos choferes no tienen cargador en el camión. A las 3pm con 15% de batería y 2 entregas pendientes, la app no puede consumir energía innecesaria.</p><div class="exp-note">Bajo el 20%: fondo negro total, sin animaciones. Solo la ruta, el QR y el botón de confirmar. La app sobrevive el día completo.</div></div>
+    <div class="exp-card r3"><div class="exp-badge">Recomendación #6</div><span class="exp-ico">☁️</span><div class="exp-t">Backend en la nube sin servidor propio</div><p class="exp-d">Un servidor propio requiere mantenimiento, backup manual, electricidad constante y alguien que lo cuide. En Venezuela, eso es un riesgo enorme.</p><div class="exp-note">Firebase o Supabase: backup automático, redundancia global. ~$25/mes para toda la operación. El CEO nunca llama a IT por caídas del sistema.</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ PWA ═══ -->
+<section class="sec" id="pwa">
+  <p class="ey r">La decisión tecnológica</p>
+  <h2 class="sh r"><em>¿App nativa, web</em><br><strong>o PWA?</strong></h2>
+  <p class="sd r">La respuesta correcta para la realidad venezolana — señal de Movilnet, Android gama media y equipos que se dañan.</p>
+  <div class="pwa-hero r">
+    <div class="pwa-verdict">PWA es<br>la respuesta.</div>
+    <p class="pwa-sub">Se abre como web la primera vez, se instala en la pantalla de inicio como app nativa, funciona offline y se actualiza sola. Sin Play Store, sin App Store.</p>
+    <div class="pwa-reasons">
+      <div class="pwa-r"><span class="pwa-r-ico">→</span>Movilnet, Movistar y Digitel tienen cobertura irregular — el offline es obligatorio</div>
+      <div class="pwa-r"><span class="pwa-r-ico">→</span>Celulares gama media — una PWA pesa hasta 10× menos que una app nativa</div>
+      <div class="pwa-r"><span class="pwa-r-ico">→</span>Si se daña el teléfono, en 30 segundos vuelven a tener la app sin configurar nada</div>
+      <div class="pwa-r"><span class="pwa-r-ico">→</span>Actualizar la app es subir código — todos los dispositivos se actualizan solos</div>
+      <div class="pwa-r"><span class="pwa-r-ico">→</span>Sin aprobación de Google ni Apple — Royal Paint lanza cuando quiere</div>
+    </div>
+  </div>
+  <div class="pwa-compare r">
+    <div class="pwa-col pc-bad" style="background:var(--ink3);"><div class="pwa-col-h">📦 App Nativa</div><div class="pwa-col-b"><div class="pwa-item"><span class="pi-no">✗</span>Requiere publicación en Play Store — días de espera</div><div class="pwa-item"><span class="pi-no">✗</span>El usuario actualiza manualmente cada versión</div><div class="pwa-item"><span class="pi-no">✗</span>Ocupa mucho espacio en celulares con poca memoria</div><div class="pwa-item"><span class="pi-ok">✓</span>Puede funcionar offline si se desarrolla así</div></div></div>
+    <div class="pwa-col pc-mid" style="background:var(--ink3);"><div class="pwa-col-h">🌐 Web Normal</div><div class="pwa-col-b"><div class="pwa-item"><span class="pi-ok">✓</span>Sin instalación — se abre desde cualquier celular</div><div class="pwa-item"><span class="pi-ok">✓</span>Actualizaciones instantáneas</div><div class="pwa-item"><span class="pi-no">✗</span>Sin internet = pantalla en blanco</div><div class="pwa-item"><span class="pi-no">✗</span>Sin acceso a cámara nativa para QR</div></div></div>
+    <div class="pwa-col pc-good" style="background:var(--ink3);"><div class="pwa-col-h">⚡ PWA — Recomendado</div><div class="pwa-col-b"><div class="pwa-item"><span class="pi-ok">✓</span>Se instala desde el navegador — un toque</div><div class="pwa-item"><span class="pi-ok">✓</span>Funciona 100% offline</div><div class="pwa-item"><span class="pi-ok">✓</span>Actualizaciones automáticas sin tienda</div><div class="pwa-item"><span class="pi-ok">✓</span>Acceso a cámara para QR y fotos</div><div class="pwa-item"><span class="pi-ok">✓</span>Reinstalación en 30 segundos si cambia el celular</div></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ DEMO VIERNES ═══ -->
+<section class="sec" id="demo-viernes">
+  <p class="ey r">Lo que viene</p>
+  <h2 class="sh r">Este viernes,<br><strong>el CEO lo ve</strong><br><em>con sus propios ojos.</em></h2>
+  <p class="sd r">No más presentaciones. No más promesas. El viernes el CEO va a tocar las apps desde su celular y ver exactamente cómo funcionarán.</p>
+
+  <div class="demo-cta-sec r">
+    <div class="demo-cta-ico">🚀</div>
+    <div class="demo-cta-date">Demo en Vivo</div>
+    <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--jadel);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Este Viernes</div>
+    <p class="demo-cta-sub">Una sesión donde el CEO va a poder navegar ambas apps — Royal Ventas y Royal Despacho — exactamente como las usaría su equipo desde el primer día.</p>
+    <div class="demo-cta-details">
+      <div class="dcd"><span class="dcd-ico">📱</span><div><div class="dcd-t">Desde su celular</div><div class="dcd-s">El CEO navega las apps en su propio teléfono</div></div></div>
+      <div class="dcd"><span class="dcd-ico">👁️</span><div><div class="dcd-t">Todo funcionando</div><div class="dcd-s">Simulador OCR, rutas, cartera, panel CEO</div></div></div>
+      <div class="dcd"><span class="dcd-ico">🔑</span><div><div class="dcd-t">Los 3 roles en vivo</div><div class="dcd-s">Ve la diferencia entre chofer regular y de confianza</div></div></div>
+      <div class="dcd"><span class="dcd-ico">❓</span><div><div class="dcd-t">Preguntas en tiempo real</div><div class="dcd-s">Cada duda se resuelve en el momento</div></div></div>
+    </div>
+    <a href="mailto:info@royalpaint.com" class="btn-jade">Confirmar asistencia al demo →</a>
+    <a href="#problema" onclick="go('problema');return false;" class="btn-outline-jade">Ver la propuesta desde el inicio</a>
+  </div>
+
+  <div style="background:var(--ink3);border:1px solid rgba(255,255,255,0.05);border-radius:16px;padding:24px 22px;" class="r">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--g);letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;">¿Qué va a ver el CEO el viernes?</div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="color:var(--jadel);font-weight:700;flex-shrink:0;">01</span><div><div style="font-size:14px;font-weight:600;margin-bottom:3px;">Royal Ventas — App del vendedor</div><div style="font-size:12px;color:var(--fog);">Dashboard con meta, alerta de clientes, el simulador OCR de 3 pasos, cartera con facturas y métodos de pago</div></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="color:var(--jadel);font-weight:700;flex-shrink:0;">02</span><div><div style="font-size:14px;font-weight:600;margin-bottom:3px;">Royal Despacho — App del chofer</div><div style="font-size:12px;color:var(--fog);">Mapa con ruta, confirmación QR, foto de evidencia, registro de cobro y directorio offline</div></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="color:var(--jadel);font-weight:700;flex-shrink:0;">03</span><div><div style="font-size:14px;font-weight:600;margin-bottom:3px;">Los 3 roles de acceso</div><div style="font-size:12px;color:var(--fog);">El CEO verá en vivo la diferencia entre el chofer regular (sin montos) y el chofer de confianza (con cobros)</div></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;"><span style="color:var(--jadel);font-weight:700;flex-shrink:0;">04</span><div><div style="font-size:14px;font-weight:600;margin-bottom:3px;">Panel ejecutivo</div><div style="font-size:12px;color:var(--fog);">Todos los vendedores, camiones, cartera y cuadre de caja en tiempo real con doble moneda</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ CTA ═══ -->
+<div class="cta-sec" id="cta">
+  <div class="cta-glow"></div>
+  <div class="hero-badge" style="margin:0 auto 32px;display:inline-flex;opacity:1;"><span class="hero-badge-dot"></span>¿Arrancamos?</div>
+  <h2 class="cta-h"><em>Royal Paint</em><br><strong>Digital</strong><br>empieza hoy.</h2>
+  <p class="cta-d">La solución completa ya está diseñada. El demo es este viernes. Lo que falta es la decisión.</p>
+  <div class="hero-btns" style="position:relative;z-index:1;">
+    <a class="btn-gold" href="mailto:info@royalpaint.com">Iniciar el proyecto →</a>
+    <a class="btn-ghost" onclick="go('demo-viernes');return false;">Ver demo del viernes</a>
+  </div>
+  <div class="cta-chips">
+    <div class="cc"><div class="cc-n">2</div><div class="cc-l">Apps PWA</div></div>
+    <div class="cc"><div class="cc-n">3</div><div class="cc-l">Roles acceso</div></div>
+    <div class="cc"><div class="cc-n">IA</div><div class="cc-l">OCR talonarios</div></div>
+    <div class="cc"><div class="cc-n">📶</div><div class="cc-l">Offline</div></div>
+    <div class="cc"><div class="cc-n">$55</div><div class="cc-l">Costo/mes</div></div>
+    <div class="cc"><div class="cc-n">👑</div><div class="cc-l">CEO dios</div></div>
+  </div>
+</div>
+
+<footer>
+  <div class="fl"><div class="fl-mark">R</div><div class="fl-text">Royal Paint</div></div>
+  <div class="ft">Propuesta ejecutiva · Confidencial · 2025</div>
+  <div class="ft">Demo este viernes 🚀</div>
+</footer>
+
+<script>
+function go(id){const el=document.getElementById(id);if(el){const y=el.getBoundingClientRect().top+window.scrollY-60;window.scrollTo({top:y,behavior:'smooth'});}}
+
+// Reveal on scroll - mobile optimized
+const revEls=document.querySelectorAll('.r,.r2,.r3');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target);}});
+},{threshold:0.01,rootMargin:'0px 0px -10px 0px'});
+revEls.forEach(el=>obs.observe(el));
+
+// Force all visible after 300ms for mobile reliability
+setTimeout(()=>{document.querySelectorAll('.r,.r2,.r3').forEach(el=>el.classList.add('v'));},300);
+
+// Nav background
+window.addEventListener('scroll',()=>{
+  const n=document.getElementById('nav');
+  if(n)n.style.background=window.scrollY>10?'rgba(6,8,15,0.97)':'rgba(6,8,15,0.97)';
+},{passive:true});
+</script>
+</body>
+</html>
